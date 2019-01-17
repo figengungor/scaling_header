@@ -69,7 +69,9 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      print('Tap Bio');
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -88,6 +90,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Expanded(
                   child: GestureDetector(
+                    onTap: () {
+                      print('Tap Movies');
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -107,8 +112,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: overlapContentHeight, right: 16, left: 16, bottom: 16),
+              padding:
+                  EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
               child: Text(
                 'James Dean was born on February 8, 1931, in Marion, Indiana. '
                     'He starred in the film adaptation of the John Steinbeck novel '

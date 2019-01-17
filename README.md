@@ -3,7 +3,7 @@
 Scale your header according to scroll position.
 
 Puts your `overlapContent` onto center of
-header's bottom. Its width will expand and border radius will decrease
+`flexibleSpace`'s bottom. Its width will expand and border radius will decrease
 while `flexibleSpace` is shrinking to standard `AppBar` which opacity
 will change from 0 to 1.
 

@@ -22,7 +22,7 @@ class ScalingHeader extends StatefulWidget {
       this.titleSpacing = NavigationToolbar.kMiddleSpacing,
       this.bottomOpacity = 1.0,
       this.flexibleSpace,
-      this.expandedHeight = 300,
+      this.flexibleSpaceHeight = 275,
       this.overlapContentHeight = 50,
       this.overlapContentWidth = 300,
       @required this.overlapContent,
@@ -75,7 +75,7 @@ class ScalingHeader extends StatefulWidget {
   final Widget flexibleSpace;
 
   /// Max height of [flexibleSpace]
-  final double expandedHeight;
+  final double flexibleSpaceHeight;
 
   /// The height of [overlapContent]
   final double overlapContentHeight;
@@ -107,7 +107,8 @@ class _ScalingHeaderState extends State<ScalingHeader>
 
   @override
   void initState() {
-    expandedHeight = widget.expandedHeight;
+    expandedHeight =
+        widget.flexibleSpaceHeight + widget.overlapContentHeight / 2;
     overlapContentHeight = widget.overlapContentHeight;
     overlapContentWidth = widget.overlapContentWidth;
 
@@ -200,33 +201,40 @@ class Header extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     shrinkOffsetNotifier.value = shrinkOffset;
     final width = MediaQuery.of(context).size.width;
-    final offset = expandedHeight -
-        (kToolbarHeight + topPadding + overlapContentHeight / 2);
+    final offset =
+        expandedHeight - (kToolbarHeight + topPadding + overlapContentHeight);
     final distance = width - overlapContentWidth;
     return Stack(
-      overflow: Overflow.visible,
       fit: StackFit.expand,
       children: <Widget>[
-        SizedBox(
-          height: overlapContentHeight,
-          child: flexibleSpace,
+        Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Positioned(
+              left: 0,
+              right: 0,
+              //height: overlapContentHeight,
+              bottom: overlapContentHeight / 2,
+              child: flexibleSpace,
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: appBar,
+            ),
+          ],
         ),
         Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: appBar,
-        ),
-        Positioned(
-          bottom: -overlapContentHeight / 2,
+          bottom: 0,
           left: 0,
           right: 0,
           child: Center(
             child: Container(
               decoration: BoxDecoration(
                 color: overlapContentBackgroundColor,
-                borderRadius:
-                    BorderRadius.circular(30 - 30 / offset * shrinkOffset),
+                borderRadius: BorderRadius.circular(overlapContentRadius -
+                    overlapContentRadius / offset * shrinkOffset),
               ),
               height: overlapContentHeight,
               width: distance / offset * shrinkOffset + overlapContentWidth,
@@ -242,8 +250,7 @@ class Header extends SliverPersistentHeaderDelegate {
   double get maxExtent => expandedHeight;
 
   @override
-  double get minExtent =>
-      kToolbarHeight + topPadding + overlapContentHeight / 2;
+  double get minExtent => kToolbarHeight + topPadding + overlapContentHeight;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

@@ -211,6 +211,7 @@ class Header extends SliverPersistentHeaderDelegate {
           fit: StackFit.expand,
           children: <Widget>[
             Positioned(
+              top: 0,
               left: 0,
               right: 0,
               //height: overlapContentHeight,
